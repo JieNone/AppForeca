@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
 interface ApiService {
-    @GET("json.end")
+    @GET("zulubet/zulubetlast.json")
     suspend fun getForecast(): List<Forecast>
 
     companion object{
@@ -14,7 +14,7 @@ interface ApiService {
         fun getInstance() : ApiService {
             if (apiService == null){
                 apiService = Retrofit.Builder()
-                    .baseUrl("json.start")
+                    .baseUrl("https://etakaapi.ru/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build().create(ApiService::class.java)
             }

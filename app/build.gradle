@@ -6,6 +6,7 @@ plugins {
 android {
     compileSdk 32
 
+
     defaultConfig {
         applicationId "fedortyurin.appforeca"
         minSdk 28
@@ -44,7 +45,10 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+
 }
+
+
 
 dependencies {
 
