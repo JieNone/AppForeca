@@ -3,7 +3,6 @@ package fedortyurin.appforeca
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -13,8 +12,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.core.graphics.toColorInt
 import coil.annotation.ExperimentalCoilApi
 import fedortyurin.appforeca.model.Forecast
 import fedortyurin.appforeca.ui.theme.ForecaAppTheme
@@ -51,10 +48,6 @@ class MainActivity : ComponentActivity() {
             Card(Modifier.clickable(onClick = {
             })) {
                 ForecastItem(forecast = item, navToDetail)
-                if (item.datetime < odtNow.toString()){
-                    Log.d(TAG, "Событие не началось")
-                }
-                else {Log.d(TAG, "Событие не началось") }
             }
         }
 
