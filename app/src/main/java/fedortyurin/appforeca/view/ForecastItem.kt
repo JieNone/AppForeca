@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
+import fedortyurin.appforeca.ForecastDetail
 import fedortyurin.appforeca.R
 import fedortyurin.appforeca.model.Forecast
 import fedortyurin.appforeca.ui.theme.BackgroundColor

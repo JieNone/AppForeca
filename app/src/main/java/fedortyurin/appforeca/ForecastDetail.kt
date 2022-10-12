@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import fedortyurin.appforeca.model.Forecast
 import fedortyurin.appforeca.ui.theme.ForecaAppTheme
+import fedortyurin.appforeca.view.DetailPage
 
 class ForecastDetail : AppCompatActivity() {
 
@@ -41,11 +42,7 @@ class ForecastDetail : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent{
             ForecaAppTheme {
-                Row(modifier = Modifier
-                    .padding(start = 8.dp)) {
-                    Text(text = forecast.flag)
-                    Text(text = forecast.liga)
-                }
+                DetailPage(forecast = forecast)
                 
             }
         }
