@@ -1,8 +1,6 @@
 package fedortyurin.appforeca
 
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -17,8 +15,6 @@ import fedortyurin.appforeca.model.Forecast
 import fedortyurin.appforeca.ui.theme.ForecaAppTheme
 import fedortyurin.appforeca.view.ForecastItem
 import fedortyurin.appforeca.viewModel.ForecastViewModel
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
 
 
 class MainActivity : ComponentActivity() {
@@ -41,7 +37,6 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalCoilApi::class)
 @Composable
  fun ForecastList(forecastList: List<Forecast>, navToDetail: (Forecast) -> Unit){
-    val odtNow = OffsetDateTime.now(ZoneOffset.UTC)
     LazyColumn{
         itemsIndexed(items = forecastList.take(15)){
                 _, item ->

@@ -15,7 +15,7 @@ import fedortyurin.appforeca.ui.theme.ForecaAppTheme
 
 class ForecastDetail : AppCompatActivity() {
 
-    private val forecast: Forecast by lazy {
+     private val forecast: Forecast by lazy {
 
         intent?.getSerializableExtra(FORECAST_ID) as Forecast
         intent?.getSerializableExtra(FORECAST_TIME) as Forecast
