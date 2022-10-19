@@ -12,6 +12,8 @@ class ForecastViewModel: ViewModel() {
     var forecastListResponse: List<Forecast> by mutableStateOf(listOf())
     private var errorMessage: String by mutableStateOf("")
 
+
+
     fun getForecastList(){
         viewModelScope.launch {
             val apiService = ApiService.getInstance()
