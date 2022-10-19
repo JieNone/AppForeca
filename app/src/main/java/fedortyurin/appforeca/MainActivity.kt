@@ -1,4 +1,4 @@
-package fedortyurin.appforeca
+ package fedortyurin.appforeca
 
 import android.app.Application
 import android.content.Context
@@ -52,7 +52,7 @@ class AppForeca : Application() {
 @Composable
  fun ForecastList(forecastList: List<Forecast>, navToDetail: (Forecast) -> Unit){
     LazyColumn{
-        itemsIndexed(items = forecastList.take(15)){
+        itemsIndexed(items = forecastList){
                 _, item ->
             Card(Modifier.clickable(onClick = {
             })) {

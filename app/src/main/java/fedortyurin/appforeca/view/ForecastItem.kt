@@ -1,28 +1,23 @@
 
 package fedortyurin.appforeca.view
 
-import android.R.string
 import android.annotation.SuppressLint
 import android.content.Context
-import android.text.format.DateUtils.formatDateTime
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
@@ -31,46 +26,73 @@ import fedortyurin.appforeca.AppForeca
 import fedortyurin.appforeca.R
 import fedortyurin.appforeca.model.Forecast
 import fedortyurin.appforeca.ui.theme.*
+import java.time.LocalDateTime
 import java.time.Month
+import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.*
+fun getDate(pattern: String): String {
+    val current = LocalDateTime.now()
+    val formatter = DateTimeFormatter.ofPattern(pattern)
+    return current.format(formatter)
 
-//fun main(){
-//    val numDateTime = "18-10, 02:35"
-////    val charMonth = numDateTime.subSequence(3,5).toString()
-////    val numMonth = charMonth.toInt()
-////    val month = Month.of(numMonth).getDisplayName(TextStyle.FULL_STANDALONE, Locale.US)
-////    val numDateTime = forecast.datetime
-//    val charHour = numDateTime.subSequence(7,12).toString()
-//    println(charHour)
-//}
+}
+fun getCurrentMonth(pattern: String): String {
+    val current = LocalDateTime.now()
+    val formatter = DateTimeFormatter.ofPattern(pattern)
+    val formatted = current.format(formatter)
+    val numMonth = formatted.toInt()
+    return Month.of(numMonth).getDisplayName(TextStyle.FULL_STANDALONE, Locale.US)
+}
 
 @Composable
 fun GetHour(forecast: Forecast){
-    val numDateTime = forecast.datetime // "18-10, 03:00"
-    val charHour = numDateTime.subSequence(7,12).toString() // "03:00"
+    if(forecast.datetime.length < 11){
+        return Text(
+            textAlign = TextAlign.Center,
+            text = getDate("HH:mm"),
+            fontWeight = FontWeight.Black,
+            modifier = Modifier
+        )
+    }
+    else{
+        val numDateTime = forecast.datetime // "18-10, 03:00"
+        val charHour = numDateTime.subSequence(7,12).toString() // "03:00"
     return Text(
+
         textAlign = TextAlign.Center,
         text = charHour,
         fontWeight = FontWeight.Black,
         modifier = Modifier
     )
+    }
 }
 @Composable
 fun GetMonth(forecast: Forecast){
+    if (forecast.datetime.length < 11){
+        return Text(
+            textAlign = TextAlign.Center,
+            text = getCurrentMonth("MM"),
+            color = Tomato,
+            fontWeight = FontWeight.Black,
+            modifier = Modifier
+        )
+    } else {
         val numDateTime = forecast.datetime
-    val charMonth = numDateTime.subSequence(3,5).toString()
-    val numMonth = charMonth.toInt()
-    val month = Month.of(numMonth).getDisplayName(TextStyle.FULL_STANDALONE, Locale.US)
-    return Text(
-        textAlign = TextAlign.Center,
-        text = month,
-        color = Tomato,
-        fontWeight = FontWeight.Black,
-        modifier = Modifier
-    )
+        val charMonth = numDateTime.subSequence(3,5).toString()
+        val numMonth = charMonth.toInt()
+        val month = Month.of(numMonth).getDisplayName(TextStyle.FULL_STANDALONE, Locale.US)
+        return Text(
+            textAlign = TextAlign.Center,
+            text = month,
+            color = Tomato,
+            fontWeight = FontWeight.Black,
+            modifier = Modifier
+        )
+    }
 }@Composable
 fun GetDay(forecast: Forecast){
+    if (forecast.datetime.length > 11){
     val numDateTime = forecast.datetime
     val charDay = numDateTime.subSequence(0,2).toString()
     return Text(
@@ -80,6 +102,15 @@ fun GetDay(forecast: Forecast){
         fontWeight = FontWeight.Black,
         modifier = Modifier
     )
+    } else {
+        return Text(
+            textAlign = TextAlign.Center,
+            text = getDate("dd"),
+            fontSize = 40.sp,
+            fontWeight = FontWeight.Black,
+            modifier = Modifier
+        )
+    }
 }
 
 
