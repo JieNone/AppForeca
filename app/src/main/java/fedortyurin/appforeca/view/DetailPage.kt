@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,6 +22,7 @@ import fedortyurin.appforeca.R
 import fedortyurin.appforeca.model.Forecast
 import fedortyurin.appforeca.ui.theme.BackgroundColor
 import fedortyurin.appforeca.ui.theme.TransparentGray
+import kotlin.reflect.typeOf
 
 
 @Composable
@@ -33,8 +35,6 @@ fun DetailPage(forecast: Forecast){
             BackButton()
             DetailMainPart(forecast = forecast)
             DetailProgress(forecast = forecast)
-//            DetailMainPart(forecast = Forecast("1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1"))
-//            DetailProgress(forecast = Forecast("1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1"))
         }
     }
 }
@@ -84,11 +84,11 @@ fun DetailMainPart(forecast: Forecast){
 
 
         ) {
-            Text(
-                text = forecast.flag,
-                fontWeight = FontWeight.Black,
-                fontSize = 16.sp,
-                color = Color.White,
+            Image(
+                painter = painterResource(id = getDrawable(forecast)),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(56.dp)
             )
             Text(
                 text = forecast.liga,
@@ -154,7 +154,8 @@ fun DetailMainPart(forecast: Forecast){
                 Text(
                     text = "Forecast ${forecast.prognoz}",
                     color = Color.Yellow,
-                    fontSize = 16.sp,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Black
                 )
             }
         }
@@ -178,19 +179,19 @@ fun DetailProgress(forecast: Forecast){
         ){
             Column() {
                 Forc("1", 0.1f)
-                Coef(forecast.coef1, 0.1f)
+                Coef(forecast.coef1, 0.1f,((forecast.vero1.replace("%", "").toFloat())/100))
 
             }
             Column(
             ) {
                 Forc("X", 0.15f)
-                Coef(forecast.coef2, 0.15f)
+                Coef(forecast.coef2, 0.15f, ((forecast.vero2.replace("%", "").toFloat())/100))
 
             }
             Column(
             ) {
                 Forc("2", 0.16f)
-                Coef(forecast.coef3, 0.15f)
+                Coef(forecast.coef3, 0.15f, ((forecast.vero3.replace("%", "").toFloat())/100))
 
             }
         }
@@ -204,8 +205,8 @@ fun Forc(num: String, frac: Float){
         modifier = Modifier.fillMaxWidth(frac))
 }
 @Composable
-fun Coef(coef: String, frac: Float){
-        CircularProgressIndicator(progress = 1f, color = Color.Yellow)
+fun Coef(coef: String, frac: Float, vero: Float){
+        CircularProgressIndicator(progress = vero , color = Color.Yellow)
         Text(text = coef,color = Color.White, modifier = Modifier
             .padding(top = 8.dp)
             .fillMaxWidth(frac), textAlign = TextAlign.Center)
@@ -243,3 +244,4 @@ fun BackButton() {
 fun PreviewDetail(){
 //    DetailPage()
 }
+

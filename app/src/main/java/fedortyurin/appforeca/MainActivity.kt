@@ -1,5 +1,7 @@
 package fedortyurin.appforeca
 
+import android.app.Application
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,18 +20,30 @@ import fedortyurin.appforeca.viewModel.ForecastViewModel
 
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
+    super.onCreate(savedInstanceState)
+        setContent   {
             ForecaAppTheme {
                 val forecastViewModel by viewModels<ForecastViewModel>()
                 ForecastList(forecastList = forecastViewModel.forecastListResponse){
-                    startActivity(ForecastDetail.newIntent(this, it))
+                    startActivity(ForecastDetail.newIntent(context = this, forecast = it))
                 }
                 forecastViewModel.getForecastList()
 
             }
         }
+    }
+}
+class AppForeca : Application() {
+    companion object {
+        private lateinit var instance: AppForeca
+        val context: Context
+            get() = instance
+    }
+
+    init {
+        instance = this
     }
 }
 
@@ -45,6 +59,5 @@ class MainActivity : ComponentActivity() {
                 ForecastItem(forecast = item, navToDetail)
             }
         }
-
     }
 }
