@@ -9,15 +9,16 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
@@ -31,11 +32,17 @@ import java.time.Month
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.*
+
 fun getDate(pattern: String): String {
     val current = LocalDateTime.now()
     val formatter = DateTimeFormatter.ofPattern(pattern)
     return current.format(formatter)
 
+}
+fun currentHour(forecast: Forecast):String {
+    val forecaHour = forecast.datetime
+    val formatter = DateTimeFormatter.ofPattern("HH:mm")
+    return forecaHour.format(formatter)
 }
 fun getCurrentMonth(pattern: String): String {
     val current = LocalDateTime.now()
@@ -46,12 +53,13 @@ fun getCurrentMonth(pattern: String): String {
 }
 
 @Composable
-fun GetHour(forecast: Forecast){
+fun GetHour(forecast: Forecast, color: Color = Color.Black, fontWeight: FontWeight = FontWeight.Black){
     if(forecast.datetime.length < 11){
         return Text(
             textAlign = TextAlign.Center,
-            text = getDate("HH:mm"),
-            fontWeight = FontWeight.Black,
+            text = currentHour(forecast),
+            color = color,
+            fontWeight = fontWeight,
             modifier = Modifier
         )
     }
@@ -62,19 +70,20 @@ fun GetHour(forecast: Forecast){
 
         textAlign = TextAlign.Center,
         text = charHour,
-        fontWeight = FontWeight.Black,
+        color = color,
+        fontWeight = fontWeight,
         modifier = Modifier
     )
     }
 }
 @Composable
-fun GetMonth(forecast: Forecast){
+fun GetMonth(forecast: Forecast, color: Color = Tomato, fontWeight: FontWeight = FontWeight.Black ){
     if (forecast.datetime.length < 11){
         return Text(
             textAlign = TextAlign.Center,
             text = getCurrentMonth("MM"),
-            color = Tomato,
-            fontWeight = FontWeight.Black,
+            color = color,
+            fontWeight = fontWeight,
             modifier = Modifier
         )
     } else {
@@ -85,29 +94,32 @@ fun GetMonth(forecast: Forecast){
         return Text(
             textAlign = TextAlign.Center,
             text = month,
-            color = Tomato,
-            fontWeight = FontWeight.Black,
+            color = color,
+            fontWeight = fontWeight,
             modifier = Modifier
         )
     }
-}@Composable
-fun GetDay(forecast: Forecast){
+}
+@Composable
+fun GetDay(forecast: Forecast, color: Color = Color.Black, fontWeight: FontWeight = FontWeight.Black, fontSize: TextUnit = 40.sp){
     if (forecast.datetime.length > 11){
     val numDateTime = forecast.datetime
     val charDay = numDateTime.subSequence(0,2).toString()
     return Text(
         textAlign = TextAlign.Center,
         text = charDay,
-        fontSize = 40.sp,
-        fontWeight = FontWeight.Black,
+        fontSize = fontSize,
+        color = color,
+        fontWeight = fontWeight,
         modifier = Modifier
     )
     } else {
         return Text(
             textAlign = TextAlign.Center,
             text = getDate("dd"),
-            fontSize = 40.sp,
-            fontWeight = FontWeight.Black,
+            fontSize = fontSize,
+            color = color,
+            fontWeight = fontWeight,
             modifier = Modifier
         )
     }
@@ -118,49 +130,50 @@ fun GetDay(forecast: Forecast){
 @Composable
 fun ForecastItem(forecast: Forecast, navToDetail: (Forecast) -> Unit) {
     if (forecast.liga != ""){
-    Card(
-        elevation = 2.dp,
-        modifier = Modifier.padding(8.dp),
-        shape = RoundedCornerShape(24.dp),
-    ) {
-        Surface(
-            Modifier.clickable { navToDetail(forecast) }
+        Spacer(modifier = Modifier.padding(bottom = 8.dp))
+        Card(
+            elevation = 8.dp,
+            shape = RoundedCornerShape(24.dp),
+            modifier = Modifier.clickable { navToDetail(forecast) }.fillMaxWidth()
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(160.dp)
-                    .background(BackgroundColor)
-                    .border(
-                        width = 1.dp,
-                        color = Color.LightGray.copy(alpha = 1f),
-                    ),
-            ) {
-                HeaderRow(forecast = forecast)
-                Row {
-                    Column(
-                        modifier = Modifier
-                            .background(Color.White)
-                            .width(((50 * 2 / 3) + 50).dp)
-                            .fillMaxHeight(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    )
-                    {
-                        GetDay(forecast)
-                        GetMonth(forecast)
-                        GetHour(forecast)
+            Box(
+                modifier = Modifier.height(160.dp)
+            ){
+                Column(
+                    modifier = Modifier
+                        .background(BackgroundColor)
+                        .border(
+                            width = 1.dp,
+                            color = Color.LightGray.copy(alpha = 1f),
+                        ),
+                ) {
+                    HeaderRow(forecast = forecast)
+                    Row {
+                        Column(
+                            modifier = Modifier
+                                .background(Color.White)
+                                .width(80.dp)
+                                .fillMaxHeight(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        )
+                        {
+                            GetDay(forecast)
+                            GetMonth(forecast)
+                            GetHour(forecast)
+                        }
+                        if (forecast.color == "Lime") {
+                            LimeBody(forecast)
+                        } else {
+                            BlueBody(forecast)
+                        }
                     }
-                    if (forecast.color == "Lime"){
-                        LimeBody(forecast)
-                    } else{ BlueBody(forecast)}
                 }
             }
         }
-    }
-    Spacer(modifier = Modifier.padding(bottom = 16.dp))
+        Spacer(modifier = Modifier.padding(bottom = 8.dp))
     }
 }
-fun getDrawable(forecast: Forecast): Int {
+fun getFlag(forecast: Forecast): Int {
     val context: Context = AppForeca.context
     val mFlagName = forecast.flag
     val resID: Int =
@@ -185,10 +198,8 @@ fun getDrawable(forecast: Forecast): Int {
 
 @Composable
 fun LimeCard(forecast: Forecast) {
-
     Row(
         modifier = Modifier
-            .layoutId("cardHeader")
             .height((56).dp)
             .background(Lime),
     ) {
@@ -196,11 +207,9 @@ fun LimeCard(forecast: Forecast) {
             modifier = Modifier.fillMaxHeight()
         ){
             Image(
-                painter = painterResource(id = getDrawable(forecast)),
+                painter = painterResource(id = getFlag(forecast)),
                 contentDescription = null,
                 modifier = Modifier
-                    .width(86.dp)
-                    .height(56.dp)
             )
         }
         Text(
@@ -218,7 +227,6 @@ fun LimeCard(forecast: Forecast) {
 fun BlueCard(forecast: Forecast) {
     Row(
         modifier = Modifier
-            .layoutId("cardHeader")
             .height((56).dp)
             .background(CoolBlue),
     ) {
@@ -226,11 +234,9 @@ fun BlueCard(forecast: Forecast) {
             modifier = Modifier.fillMaxHeight()
         ){
         Image(
-            painter = painterResource(id = getDrawable(forecast)),
+            painter = painterResource(id = getFlag(forecast)),
             contentDescription = null,
             modifier = Modifier
-                .width(86.dp)
-                .height(56.dp)
         )
         }
         Text(
@@ -240,11 +246,12 @@ fun BlueCard(forecast: Forecast) {
             maxLines = 2,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 0.dp, top = 8.dp)
+                .padding(top = 8.dp)
         )
     }
 }
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun BlueBody(forecast: Forecast) {
     Column(
@@ -292,7 +299,8 @@ fun BlueBody(forecast: Forecast) {
                 Text(
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
-                    text = forecast.team1
+                    text = forecast.team1,
+
                 )
                 Text(
                     fontWeight = FontWeight.Bold,
@@ -328,6 +336,7 @@ fun BlueBody(forecast: Forecast) {
     }
 
 }
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun LimeBody(forecast: Forecast) {
     Column(
