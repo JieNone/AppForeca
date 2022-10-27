@@ -2,7 +2,7 @@
     android:viewportWidth="550"
     android:viewportHeight="350"
     android:width="550dp"
-    android:height="350dp">
+    android:height="385dp">
     <path
         android:pathData="M-0.5 -0.5C182.833 -0.5 366.167 -0.5 549.5 -0.5C549.5 38.5 549.5 77.5 549.5 116.5C366.167 116.5 182.833 116.5 -0.5 116.5C-0.5 77.5 -0.5 38.5 -0.5 -0.5Z"
         android:fillType="evenOdd"

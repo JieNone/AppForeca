@@ -10,8 +10,10 @@ import fedortyurin.appforeca.R
 
 
 val fonts = FontFamily(
-    Font(R.font.quicksand_reg, weight = FontWeight.Normal),
-    Font(R.font.quicksand_bold, weight = FontWeight.Bold)
+    Font(R.font.roboto_regular, weight = FontWeight.Normal),
+    Font(R.font.roboto_medium, weight = FontWeight.Medium),
+    Font(R.font.roboto_bold, weight = FontWeight.Bold),
+    Font(R.font.roboto_black, weight = FontWeight.Black),
 )
 // Set of Material typography styles to start with
 val Typography = Typography(
